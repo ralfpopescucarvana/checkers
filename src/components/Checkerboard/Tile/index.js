@@ -8,19 +8,19 @@ flex-grow: 1;
 justify-content: center;
 align-items: center;
 border: 3px solid ${props => props.isSelected ? 'red' : 'black'}
-opacity: ${props => props.isValidMove ? '50%' : '100%'}
+opacity: ${props => props.isValidMove ? '0.5' : '1'}
 `
 
 const calculateValidMoves = (selectedPiece, gameState) => {
     const { rowNumber, columnNumber, color } = selectedPiece
-    const rowDelta = color ? -1 : 1
+    const rowDelta = color ? 1 : -1
     const validColumns = [columnNumber - 1, columnNumber + 1]
     const validMoves = []
-    if (validColumns[0] > 0) {
-        validMoves.push({ row: rowNumber + rowDelta, columnNumber: validColumns[0] })
+    if (validColumns[0] >= 0) {
+        validMoves.push({ row: rowNumber + rowDelta, column: validColumns[0] })
     }
-    if (validColumns[1] < 7) {
-        validMoves.push({ row: rowNumber + rowDelta, columnNumber: validColumns[1] })
+    if (validColumns[1] <= 7) {
+        validMoves.push({ row: rowNumber + rowDelta, column: validColumns[1] })
     }
     return validMoves
 }
@@ -32,9 +32,9 @@ const onClick = (setGameState, gameState, rowNumber, columnNumber, color) => () 
     })
 }
 
-const calculateIfValidMove = (validMoves, rowNumber, columnNumber) => {
-    return validMoves.map(move => move[0] === rowNumber && move[1] === columnNumber).reduce((acc, curr) => (acc || curr), false)
-}
+const calculateIfValidMove = (validMoves, rowNumber, columnNumber) => (
+    validMoves.map(move => move.row === rowNumber && move.column === columnNumber).reduce((acc, curr) => (acc || curr), false)
+)
 
 const Tile = ({ startingColor, hasPiece, pieceColor, rowNumber, columnNumber, gameState, setGameState }) => (
     <TileDiv startingColor={startingColor} isSelected={rowNumber === gameState.selectedPiece.rowNumber &&
