@@ -9,6 +9,7 @@ justify-content: center;
 align-items: center;
 border: 3px solid ${props => props.isSelected ? 'red' : 'black'}
 opacity: ${props => props.isValidMove ? '0.5' : '1'}
+cursor: ${props => props.isValidMove ? 'pointer' : ''};
 `
 
 const calculateValidMoves = (selectedPiece, gameState) => {
